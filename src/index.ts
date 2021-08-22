@@ -2,19 +2,21 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:08:08
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-22 20:12:34
+ * @LastEditTime: 2021-08-22 21:01:19
  * @FilePath: \ts-axios\src\index.ts
  * @Description:
  */
-import { transformRequest } from './helpers/data'
+import { transformRequest, transformResponse } from './helpers/data'
 import { processHeaders } from './helpers/headers'
 import { buildURL } from './helpers/url'
-import { AxiosRequestConfig } from './type'
+import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from './type'
 import xhr from './xhr'
 
-function axios(config: AxiosRequestConfig): void {
+function axios(config: AxiosRequestConfig): AxiosPromise {
   precessCofig(config)
-  xhr(config)
+  return xhr(config).then(res => {
+    return transformResponseData(res)
+  })
 }
 
 function precessCofig(config: AxiosRequestConfig): void {
@@ -35,6 +37,11 @@ function transformRequestData(config: AxiosRequestConfig): any {
 function transformHeader(config: AxiosRequestConfig) {
   const { headers = {}, data } = config
   return processHeaders(headers, data)
+}
+
+function transformResponseData(res: AxiosResponse): AxiosResponse {
+  res.data = transformResponse(res.data)
+  return res
 }
 
 export default axios

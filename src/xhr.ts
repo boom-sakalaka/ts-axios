@@ -2,24 +2,47 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:57:25
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-22 20:15:11
+ * @LastEditTime: 2021-08-22 20:57:17
  * @FilePath: \ts-axios\src\xhr.ts
  * @Description:
  */
-import { AxiosRequestConfig } from './type'
+import { parseHeaders } from './helpers/headers'
+import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from './type'
 
-export default function xhr(config: AxiosRequestConfig): void {
-  const { data = null, url, method = 'get', headers } = config
-  // 创XMLHttpRequest 对象
-  const request = new XMLHttpRequest()
-  request.open(method.toUpperCase(), url, true)
+export default function xhr(config: AxiosRequestConfig): AxiosPromise {
+  return new Promise(resolve => {
+    const { data = null, url, method = 'get', headers, responseType } = config
+    // 创XMLHttpRequest 对象
+    const request = new XMLHttpRequest()
 
-  Object.keys(headers).forEach(name => {
-    if (data === null && name.toLowerCase() === 'content-type') {
-      delete headers[name]
-    } else {
-      request.setRequestHeader(name, headers[name])
+    if (responseType) {
+      request.responseType = responseType
     }
+    request.open(method.toUpperCase(), url, true)
+    request.onreadystatechange = function handleLoad() {
+      if (request.readyState !== 4) {
+        return
+      }
+      const responseHeaders = parseHeaders(request.getAllResponseHeaders())
+      const responseData = responseType !== 'text' ? request.response : request.responseText
+      const response: AxiosResponse = {
+        data: responseData,
+        status: request.status,
+        statusText: request.statusText,
+        headers: responseHeaders,
+        config,
+        request
+      }
+      resolve(response)
+    }
+
+    Object.keys(headers).forEach(name => {
+      if (data === null && name.toLowerCase() === 'content-type') {
+        delete headers[name]
+      } else {
+        request.setRequestHeader(name, headers[name])
+      }
+    })
+    request.send(data)
   })
-  request.send(data)
 }
