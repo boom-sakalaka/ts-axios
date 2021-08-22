@@ -2,11 +2,11 @@
  * @Author: GZH
  * @Date: 2021-08-22 11:36:56
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-22 12:14:44
+ * @LastEditTime: 2021-08-22 19:52:54
  * @FilePath: \ts-axios\src\helpers\url.ts
  * @Description:
  */
-import { isData, isObject } from './utils'
+import { isData, isPlainObject } from './utils'
 
 function encode(val: string): string {
   return encodeURIComponent(val)
@@ -39,7 +39,7 @@ export function buildURL(url: string, params?: any): string {
     values.forEach(val => {
       if (isData(val)) {
         val = val.toISOString()
-      } else if (isObject(val)) {
+      } else if (isPlainObject(val)) {
         val = JSON.stringify(val)
       }
       parts.push(`${encode(key)}=${encode(val)}`)

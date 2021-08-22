@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:12:17
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-22 11:35:04
+ * @LastEditTime: 2021-08-22 20:09:29
  * @FilePath: \ts-axios\src\type\index.ts
  * @Description:
  */
@@ -28,4 +28,5 @@ export interface AxiosRequestConfig {
   method?: Method
   data?: any
   params?: any
+  headers?: any
 }
