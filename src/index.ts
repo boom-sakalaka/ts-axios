@@ -1,47 +1,13 @@
 /*
  * @Author: GZH
- * @Date: 2021-08-22 10:08:08
+ * @Date: 2021-08-22 17:56:46
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-22 21:01:19
+ * @LastEditTime: 2021-08-25 21:12:31
  * @FilePath: \ts-axios\src\index.ts
  * @Description:
  */
-import { transformRequest, transformResponse } from './helpers/data'
-import { processHeaders } from './helpers/headers'
-import { buildURL } from './helpers/url'
-import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from './type'
-import xhr from './xhr'
+import axios from './axios'
 
-function axios(config: AxiosRequestConfig): AxiosPromise {
-  precessCofig(config)
-  return xhr(config).then(res => {
-    return transformResponseData(res)
-  })
-}
-
-function precessCofig(config: AxiosRequestConfig): void {
-  config.url = transformURL(config)
-  config.headers = transformHeader(config)
-  config.data = transformRequestData(config)
-}
-
-function transformURL(config: AxiosRequestConfig): string {
-  const { url, params } = config
-  return buildURL(url, params)
-}
-
-function transformRequestData(config: AxiosRequestConfig): any {
-  return transformRequest(config.data)
-}
-
-function transformHeader(config: AxiosRequestConfig) {
-  const { headers = {}, data } = config
-  return processHeaders(headers, data)
-}
-
-function transformResponseData(res: AxiosResponse): AxiosResponse {
-  res.data = transformResponse(res.data)
-  return res
-}
+export * from './type'
 
 export default axios

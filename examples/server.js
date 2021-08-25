@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 11:24:29
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-22 20:23:09
+ * @LastEditTime: 2021-08-25 20:49:55
  * @FilePath: \ts-axios\examples\server.js
  * @Description:
  */
@@ -59,6 +59,25 @@ router.post('/base/buffer', function(req, res) {
     let buf = Buffer.concat(msg)
     res.json(buf.toJSON())
   })
+})
+
+router.get('/error/get', function(req, res) {
+  if (Math.random() > 0.5) {
+    res.json({
+      msg: `hello world`
+    })
+  } else {
+    res.status(500)
+    res.end()
+  }
+})
+
+router.get('/error/timeout', function(req, res) {
+  setTimeout(() => {
+    res.json({
+      msg: `hello world`
+    })
+  }, 3000)
 })
 
 app.use(router)

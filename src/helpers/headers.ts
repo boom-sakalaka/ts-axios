@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 20:03:56
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-22 20:56:44
+ * @LastEditTime: 2021-08-22 21:05:57
  * @FilePath: \ts-axios\src\helpers\headers.ts
  * @Description:
  */
@@ -23,6 +23,7 @@ function normalizeHeaderName(headers: any, normalizedName: string): void {
 export function processHeaders(headers: any, data: any): any {
   normalizeHeaderName(headers, 'Content-Type')
 
+  // 如果data是一个对象，那么 header 的 content-type 就要改为application/json;charset=utf-8
   if (isPlainObject(data)) {
     if (headers && !headers['Content-Type']) {
       headers['Content-Type'] = 'application/json;charset=utf-8'
