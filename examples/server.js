@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 11:24:29
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-25 20:49:55
+ * @LastEditTime: 2021-08-28 22:38:43
  * @FilePath: \ts-axios\examples\server.js
  * @Description:
  */
@@ -80,9 +80,53 @@ router.get('/error/timeout', function(req, res) {
   }, 3000)
 })
 
+registerExtendRouter()
 app.use(router)
 
 const port = process.env.PORT || 8080
 module.exports = app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop`)
 })
+
+function registerExtendRouter() {
+  router.get('/extend/get', function(req, res) {
+    res.json({
+      msg: 'hello world'
+    })
+  })
+
+  router.options('/extend/options', function(req, res) {
+    res.end()
+  })
+
+  router.delete('/extend/delete', function(req, res) {
+    res.end()
+  })
+
+  router.head('/extend/head', function(req, res) {
+    res.end()
+  })
+
+  router.post('/extend/post', function(req, res) {
+    res.json(req.body)
+  })
+
+  router.put('/extend/put', function(req, res) {
+    res.json(req.body)
+  })
+
+  router.patch('/extend/patch', function(req, res) {
+    res.json(req.body)
+  })
+
+  router.get('/extend/user', function(req, res) {
+    res.json({
+      code: 0,
+      message: 'ok',
+      result: {
+        name: 'jack',
+        age: 18
+      }
+    })
+  })
+}

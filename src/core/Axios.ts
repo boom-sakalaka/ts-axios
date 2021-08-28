@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-28 21:38:19
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-28 21:57:24
+ * @LastEditTime: 2021-08-28 22:38:07
  * @FilePath: \ts-axios\src\core\Axios.ts
  * @Description:
  */
@@ -42,19 +42,19 @@ export default class Axios {
     return this._requestMethodWithData('patch', url, data, config)
   }
 
-  _requestMethodWithoutData(methods: Method, url: string, config?: AxiosRequestConfig) {
+  _requestMethodWithoutData(method: Method, url: string, config?: AxiosRequestConfig) {
     return this.request(
       Object.assign(config || {}, {
-        methods,
+        method,
         url
       })
     )
   }
 
-  _requestMethodWithData(methods: Method, url: string, data?: any, config?: AxiosRequestConfig) {
+  _requestMethodWithData(method: Method, url: string, data?: any, config?: AxiosRequestConfig) {
     return this.request(
       Object.assign(config || {}, {
-        methods,
+        method,
         url,
         data
       })

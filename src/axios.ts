@@ -1,47 +1,25 @@
 /*
  * @Author: GZH
- * @Date: 2021-08-22 10:08:08
+ * @Date: 2021-08-28 20:55:01
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-28 21:48:14
+ * @LastEditTime: 2021-08-28 22:25:28
  * @FilePath: \ts-axios\src\axios.ts
  * @Description:
  */
-import { transformRequest, transformResponse } from './helpers/data'
-import { processHeaders } from './helpers/headers'
-import { buildURL } from './helpers/url'
-import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from './type'
-import xhr from './core/xhr'
 
-function axios(config: AxiosRequestConfig): AxiosPromise {
-  precessCofig(config)
-  return xhr(config).then(res => {
-    return transformResponseData(res)
-  })
+import Axios from './core/Axios'
+import { AxiosInstance } from './type'
+import { extend } from './helpers/utils'
+
+function creataInstance(): AxiosInstance {
+  const context = new Axios()
+  const instance = Axios.prototype.request.bind(context)
+
+  extend(instance, context)
+
+  return instance as AxiosInstance
 }
 
-function precessCofig(config: AxiosRequestConfig): void {
-  config.url = transformURL(config)
-  config.headers = transformHeader(config)
-  config.data = transformRequestData(config)
-}
-
-function transformURL(config: AxiosRequestConfig): string {
-  const { url, params } = config
-  return buildURL(url!, params)
-}
-
-function transformRequestData(config: AxiosRequestConfig): any {
-  return transformRequest(config.data)
-}
-
-function transformHeader(config: AxiosRequestConfig) {
-  const { headers = {}, data } = config
-  return processHeaders(headers, data)
-}
-
-function transformResponseData(res: AxiosResponse): AxiosResponse {
-  res.data = transformResponse(res.data)
-  return res
-}
+const axios = creataInstance()
 
 export default axios
