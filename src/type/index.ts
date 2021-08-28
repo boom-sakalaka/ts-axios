@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:12:17
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-28 21:35:12
+ * @LastEditTime: 2021-08-28 22:48:21
  * @FilePath: \ts-axios\src\type\index.ts
  * @Description:
  */
@@ -72,4 +72,5 @@ export interface Axios {
 
 export interface AxiosInstance extends Axios {
   (config: AxiosRequestConfig): AxiosPromise
+  (url: string, config?: AxiosRequestConfig): AxiosPromise
 }

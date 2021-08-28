@@ -2,41 +2,41 @@
  * @Author: GZH
  * @Date: 2021-08-28 22:25:41
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-28 22:30:22
+ * @LastEditTime: 2021-08-28 22:54:07
  * @FilePath: \ts-axios\examples\extend\app.ts
  * @Description:
  */
 import axios from '../../src/index'
 
-axios({
-  url: '/extend/post',
-  method: 'post',
-  data: {
-    msg: 'hi'
-  }
-})
+// axios({
+//   url: '/extend/post',
+//   method: 'post',
+//   data: {
+//     msg: 'hi'
+//   }
+// })
 
-axios.request({
-  url: '/extend/post',
-  method: 'post',
-  data: {
-    msg: 'hello'
-  }
-})
+// axios.request({
+//   url: '/extend/post',
+//   method: 'post',
+//   data: {
+//     msg: 'hello'
+//   }
+// })
 
-axios.get('/extend/get')
+// axios.get('/extend/get')
 
-axios.options('/extend/options')
+// axios.options('/extend/options')
 
-axios.delete('/extend/delete')
+// axios.delete('/extend/delete')
 
-axios.head('/extend/head')
+// axios.head('/extend/head')
 
-axios.post('/extend/post', { msg: 'post' })
+// axios.post('/extend/post', { msg: 'post' })
 
-axios.put('/extend/put', { msg: 'put' })
+// axios.put('/extend/put', { msg: 'put' })
 
-axios.patch('/extend/patch', { msg: 'patch' })
+// axios.patch('/extend/patch', { msg: 'patch' })
 
 axios({
   url: '/extend/post',

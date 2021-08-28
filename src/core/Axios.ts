@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-28 21:38:19
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-28 22:38:07
+ * @LastEditTime: 2021-08-28 22:52:03
  * @FilePath: \ts-axios\src\core\Axios.ts
  * @Description:
  */
@@ -10,7 +10,16 @@ import { AxiosPromise, AxiosRequestConfig, Method } from '../type'
 import dispatchRequest from './dispatchRequest'
 
 export default class Axios {
-  request(config: AxiosRequestConfig): AxiosPromise {
+  request(url: any, config?: any): AxiosPromise {
+    if (typeof url === 'string') {
+      if (!config) {
+        config = {}
+      }
+      config.url = url
+    } else {
+      config = url
+    }
+
     return dispatchRequest(config)
   }
 
