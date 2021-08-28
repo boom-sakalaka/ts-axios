@@ -2,13 +2,13 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:57:25
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-25 21:07:22
- * @FilePath: \ts-axios\src\xhr.ts
+ * @LastEditTime: 2021-08-28 21:48:00
+ * @FilePath: \ts-axios\src\core\xhr.ts
  * @Description:
  */
-import { parseHeaders } from './helpers/headers'
-import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from './type'
-import { createError } from './helpers/error'
+import { parseHeaders } from '../helpers/headers'
+import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../type'
+import { createError } from '../helpers/error'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
@@ -33,7 +33,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     request.onerror = function handleError() {
       reject(createError('Network Error', config, null, request))
     }
-    request.open(method.toUpperCase(), url, true)
+    request.open(method.toUpperCase(), url!, true)
     request.onreadystatechange = function handleLoad() {
       if (request.readyState !== 4) {
         return

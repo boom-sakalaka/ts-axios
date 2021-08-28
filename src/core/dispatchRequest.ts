@@ -2,17 +2,17 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:08:08
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-28 21:48:14
- * @FilePath: \ts-axios\src\axios.ts
+ * @LastEditTime: 2021-08-28 21:47:52
+ * @FilePath: \ts-axios\src\core\dispatchRequest.ts
  * @Description:
  */
-import { transformRequest, transformResponse } from './helpers/data'
-import { processHeaders } from './helpers/headers'
-import { buildURL } from './helpers/url'
-import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from './type'
-import xhr from './core/xhr'
+import { transformRequest, transformResponse } from '../helpers/data'
+import { processHeaders } from '../helpers/headers'
+import { buildURL } from '../helpers/url'
+import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../type'
+import xhr from './xhr'
 
-function axios(config: AxiosRequestConfig): AxiosPromise {
+export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
   precessCofig(config)
   return xhr(config).then(res => {
     return transformResponseData(res)
@@ -43,5 +43,3 @@ function transformResponseData(res: AxiosResponse): AxiosResponse {
   res.data = transformResponse(res.data)
   return res
 }
-
-export default axios
