@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 11:24:29
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-28 22:38:43
+ * @LastEditTime: 2021-08-30 20:40:51
  * @FilePath: \ts-axios\examples\server.js
  * @Description:
  */
@@ -81,6 +81,7 @@ router.get('/error/timeout', function(req, res) {
 })
 
 registerExtendRouter()
+registerInterceptorRouter()
 app.use(router)
 
 const port = process.env.PORT || 8080
@@ -128,5 +129,11 @@ function registerExtendRouter() {
         age: 18
       }
     })
+  })
+}
+
+function registerInterceptorRouter() {
+  router.get('/interceptor/get', function(req, res) {
+    res.end('hello')
   })
 }
