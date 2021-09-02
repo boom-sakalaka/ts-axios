@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 11:24:29
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-30 20:40:51
+ * @LastEditTime: 2021-09-02 21:07:40
  * @FilePath: \ts-axios\examples\server.js
  * @Description:
  */
@@ -80,6 +80,7 @@ router.get('/error/timeout', function(req, res) {
   }, 3000)
 })
 
+registerConfigRouter()
 registerExtendRouter()
 registerInterceptorRouter()
 app.use(router)
@@ -135,5 +136,11 @@ function registerExtendRouter() {
 function registerInterceptorRouter() {
   router.get('/interceptor/get', function(req, res) {
     res.end('hello')
+  })
+}
+
+function registerConfigRouter() {
+  router.post('/config/post', function(req, res) {
+    res.json(req.body)
   })
 }
