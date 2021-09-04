@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:12:17
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-02 22:17:05
+ * @LastEditTime: 2021-09-04 21:02:20
  * @FilePath: \ts-axios\src\type\index.ts
  * @Description:
  */
@@ -105,4 +105,45 @@ export interface RejectedFn {
 
 export interface AxiosTransformer {
   (data: any, headers?: any): any
+}
+
+///
+
+export interface CancelToken {
+  promise: Promise<Cancel>
+  reason?: Cancel
+
+  throwIfRequested(): void
+}
+
+export interface Canceler {
+  (message?: string): void
+}
+
+export interface CancelExecutor {
+  (cancel: Canceler): void
+}
+
+export interface CancelTokenSource {
+  token: CancelToken
+  cancel: Canceler
+}
+
+export interface CancelTokenStatic {
+  new (executor: CancelExecutor): CancelToken
+
+  source(): CancelTokenSource
+}
+
+export interface Cancel {
+  message?: string
+}
+
+export interface CancelStatic {
+  new (message?: string): Cancel
+}
+
+export interface AxiosBasicCredentials {
+  username: string
+  password: string
 }
