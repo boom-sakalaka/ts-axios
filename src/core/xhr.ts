@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:57:25
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-28 21:48:00
+ * @LastEditTime: 2021-09-05 11:31:17
  * @FilePath: \ts-axios\src\core\xhr.ts
  * @Description:
  */
@@ -12,7 +12,7 @@ import { createError } from '../helpers/error'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data = null, url, method = 'get', headers, responseType, timeout } = config
+    const { data = null, url, method = 'get', headers, responseType, timeout, cancelToken } = config
     // 创XMLHttpRequest 对象
     const request = new XMLHttpRequest()
 
@@ -64,6 +64,14 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         request.setRequestHeader(name, headers[name])
       }
     })
+
+    if (cancelToken) {
+      cancelToken.promise.then(reason => {
+        request.abort()
+        reject(reason)
+      })
+    }
+
     request.send(data)
 
     function handleResponse(response: AxiosResponse): void {

@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 11:24:29
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-02 21:07:40
+ * @LastEditTime: 2021-09-05 13:23:28
  * @FilePath: \ts-axios\examples\server.js
  * @Description:
  */
@@ -83,6 +83,7 @@ router.get('/error/timeout', function(req, res) {
 registerConfigRouter()
 registerExtendRouter()
 registerInterceptorRouter()
+registerCancelRouter()
 app.use(router)
 
 const port = process.env.PORT || 8080
@@ -142,5 +143,19 @@ function registerInterceptorRouter() {
 function registerConfigRouter() {
   router.post('/config/post', function(req, res) {
     res.json(req.body)
+  })
+}
+
+function registerCancelRouter() {
+  router.get('/cancel/get', function(req, res) {
+    setTimeout(() => {
+      res.json('hello')
+    }, 1000)
+  })
+
+  router.post('/cancel/post', function(req, res) {
+    setTimeout(() => {
+      res.json(req.body)
+    }, 1000)
   })
 }

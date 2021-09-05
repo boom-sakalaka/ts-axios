@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:12:17
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-04 21:02:20
+ * @LastEditTime: 2021-09-05 12:15:49
  * @FilePath: \ts-axios\src\type\index.ts
  * @Description:
  */
@@ -34,6 +34,8 @@ export interface AxiosRequestConfig {
 
   transformRequest?: AxiosTransformer | AxiosTransformer[]
   transformResponse?: AxiosTransformer | AxiosTransformer[]
+
+  cancelToken?: CancelToken
 
   [propName: string]: any
 }
@@ -88,6 +90,10 @@ export interface AxiosInstance extends Axios {
 
 export interface AxiosStatic extends AxiosInstance {
   create(config: AxiosRequestConfig): AxiosInstance
+
+  CancelToken: CancelTokenStatic
+  Cancel: CancelStatic
+  isCancel: (value: any) => boolean
 }
 
 export interface AxiosInterceptorManager<T> {
@@ -107,12 +113,9 @@ export interface AxiosTransformer {
   (data: any, headers?: any): any
 }
 
-///
-
 export interface CancelToken {
   promise: Promise<Cancel>
   reason?: Cancel
-
   throwIfRequested(): void
 }
 
@@ -141,9 +144,4 @@ export interface Cancel {
 
 export interface CancelStatic {
   new (message?: string): Cancel
-}
-
-export interface AxiosBasicCredentials {
-  username: string
-  password: string
 }

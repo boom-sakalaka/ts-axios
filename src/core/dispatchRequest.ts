@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:08:08
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-02 22:08:08
+ * @LastEditTime: 2021-09-05 13:22:03
  * @FilePath: \ts-axios\src\core\dispatchRequest.ts
  * @Description:
  */
@@ -14,6 +14,7 @@ import transform from './transform'
 import xhr from './xhr'
 
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
+  throwIfCancellationRequested(config)
   precessCofig(config)
   return xhr(config).then(res => {
     return transformResponseData(res)
@@ -34,4 +35,10 @@ function transformURL(config: AxiosRequestConfig): string {
 function transformResponseData(res: AxiosResponse): AxiosResponse {
   res.data = transform(res.data, res.headers, res.config.transformResponse)
   return res
+}
+
+function throwIfCancellationRequested(config: AxiosRequestConfig): void {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested()
+  }
 }
