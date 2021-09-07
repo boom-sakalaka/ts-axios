@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:12:17
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-05 12:15:49
+ * @LastEditTime: 2021-09-07 20:38:29
  * @FilePath: \ts-axios\src\type\index.ts
  * @Description:
  */
@@ -36,6 +36,8 @@ export interface AxiosRequestConfig {
   transformResponse?: AxiosTransformer | AxiosTransformer[]
 
   cancelToken?: CancelToken
+
+  withCredentials?: boolean
 
   [propName: string]: any
 }

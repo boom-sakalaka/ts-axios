@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:57:25
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-05 11:31:17
+ * @LastEditTime: 2021-09-07 20:39:00
  * @FilePath: \ts-axios\src\core\xhr.ts
  * @Description:
  */
@@ -12,7 +12,16 @@ import { createError } from '../helpers/error'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data = null, url, method = 'get', headers, responseType, timeout, cancelToken } = config
+    const {
+      data = null,
+      url,
+      method = 'get',
+      headers,
+      responseType,
+      timeout,
+      cancelToken,
+      withCredentials
+    } = config
     // 创XMLHttpRequest 对象
     const request = new XMLHttpRequest()
 
@@ -23,6 +32,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     // 设置超时
     if (timeout) {
       request.timeout = timeout
+    }
+
+    if (withCredentials) {
+      request.withCredentials = withCredentials
     }
 
     // 请求超时后的回调

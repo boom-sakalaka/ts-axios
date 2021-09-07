@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 11:24:29
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-05 13:23:28
+ * @LastEditTime: 2021-09-07 20:44:44
  * @FilePath: \ts-axios\examples\server.js
  * @Description:
  */
@@ -13,6 +13,8 @@ const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
 const router = express.Router()
+
+require('./server2')
 
 const app = express()
 const compiler = webpack(WebpackConfig)
@@ -84,6 +86,7 @@ registerConfigRouter()
 registerExtendRouter()
 registerInterceptorRouter()
 registerCancelRouter()
+registerMoreRouter()
 app.use(router)
 
 const port = process.env.PORT || 8080
@@ -157,5 +160,42 @@ function registerCancelRouter() {
     setTimeout(() => {
       res.json(req.body)
     }, 1000)
+  })
+}
+
+function registerMoreRouter() {
+  router.get('/more/get', function(req, res) {
+    res.json(req.cookies)
+  })
+
+  router.post('/more/upload', function(req, res) {
+    console.log(req.body, req.files)
+    res.end('upload success!')
+  })
+
+  router.post('/more/post', function(req, res) {
+    const auth = req.headers.authorization
+    const [type, credentials] = auth.split(' ')
+    console.log(atob(credentials))
+    const [username, password] = atob(credentials).split(':')
+    if (type === 'Basic' && username === 'Yee' && password === '123456') {
+      res.json(req.body)
+    } else {
+      res.status(401)
+      res.end('UnAuthorization')
+    }
+  })
+
+  router.get('/more/304', function(req, res) {
+    res.status(304)
+    res.end()
+  })
+
+  router.get('/more/A', function(req, res) {
+    res.end('A')
+  })
+
+  router.get('/more/B', function(req, res) {
+    res.end('B')
   })
 }
