@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 11:24:29
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-07 20:44:44
+ * @LastEditTime: 2021-09-07 22:00:22
  * @FilePath: \ts-axios\examples\server.js
  * @Description:
  */
@@ -30,6 +30,14 @@ app.use(
 )
 
 app.use(webpackHotMiddleware(compiler))
+
+app.use(
+  express.static(__dirname, {
+    setHeaders(res) {
+      res.cookie('XSRF-TOKEN-D', '1234abc')
+    }
+  })
+)
 
 app.use(express.static(__dirname))
 

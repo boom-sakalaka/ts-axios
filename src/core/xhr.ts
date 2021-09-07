@@ -2,13 +2,15 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:57:25
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-07 20:39:00
+ * @LastEditTime: 2021-09-07 21:57:51
  * @FilePath: \ts-axios\src\core\xhr.ts
  * @Description:
  */
 import { parseHeaders } from '../helpers/headers'
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../type'
 import { createError } from '../helpers/error'
+import { isURLSameOrigin } from '../helpers/url'
+import cookie from '../helpers/cookie'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
@@ -20,7 +22,9 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       responseType,
       timeout,
       cancelToken,
-      withCredentials
+      withCredentials,
+      xsrfCookieName,
+      xsrfHeaderName
     } = config
     // 创XMLHttpRequest 对象
     const request = new XMLHttpRequest()
@@ -68,6 +72,13 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       }
       // 处理不同status 状况
       handleResponse(response)
+    }
+
+    if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName) {
+      const xsrfValue = cookie.read(xsrfCookieName)
+      if (xsrfValue && xsrfHeaderName) {
+        headers[xsrfHeaderName] = xsrfValue
+      }
     }
 
     Object.keys(headers).forEach(name => {

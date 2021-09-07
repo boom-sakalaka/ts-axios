@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:12:17
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-07 20:38:29
+ * @LastEditTime: 2021-09-07 21:38:05
  * @FilePath: \ts-axios\src\type\index.ts
  * @Description:
  */
@@ -38,7 +38,8 @@ export interface AxiosRequestConfig {
   cancelToken?: CancelToken
 
   withCredentials?: boolean
-
+  xsrfCookieName?: string
+  xsrfHeaderName?: string
   [propName: string]: any
 }
 
