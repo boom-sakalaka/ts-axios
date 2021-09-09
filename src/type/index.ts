@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:12:17
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-09 20:26:46
+ * @LastEditTime: 2021-09-09 20:35:13
  * @FilePath: \ts-axios\src\type\index.ts
  * @Description:
  */
@@ -45,6 +45,8 @@ export interface AxiosRequestConfig {
   onUploadProgress?: (e: ProgressEvent) => void
 
   auth?: AxiosBasicCredentials
+
+  validateStatus?: (status: number) => boolean
   [propName: string]: any
 }
 

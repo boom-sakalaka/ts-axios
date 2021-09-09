@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:57:25
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-09 20:28:30
+ * @LastEditTime: 2021-09-09 20:36:55
  * @FilePath: \ts-axios\src\core\xhr.ts
  * @Description:
  */
@@ -28,7 +28,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       xsrfHeaderName,
       onDownloadProgress,
       onUploadProgress,
-      auth
+      auth,
+      validateStatus
     } = config
     // 创XMLHttpRequest 对象
     const request = new XMLHttpRequest()
@@ -136,7 +137,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
 
     function handleResponse(response: AxiosResponse): void {
-      if (response.status >= 200 && response.status < 300) {
+      if (!validateStatus || validateStatus(response.status)) {
         resolve(response)
       } else {
         reject(

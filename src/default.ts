@@ -6,7 +6,7 @@ import { AxiosRequestConfig } from './type'
  * @Author: GZH
  * @Date: 2021-09-02 20:05:44
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-07 21:38:23
+ * @LastEditTime: 2021-09-09 20:35:43
  * @FilePath: \ts-axios\src\default.ts
  * @Description:
  */
@@ -38,7 +38,11 @@ const defaults: AxiosRequestConfig = {
     function(data: any): any {
       return transformResponse(data)
     }
-  ]
+  ],
+
+  validateStatus(status: number): boolean {
+    return status >= 200 && status < 300
+  }
 }
 
 const methodsNoData = ['delete', 'get', 'head', 'options']
