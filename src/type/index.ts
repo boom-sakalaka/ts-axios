@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:12:17
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-09 20:35:13
+ * @LastEditTime: 2021-09-09 20:40:50
  * @FilePath: \ts-axios\src\type\index.ts
  * @Description:
  */
@@ -47,6 +47,9 @@ export interface AxiosRequestConfig {
   auth?: AxiosBasicCredentials
 
   validateStatus?: (status: number) => boolean
+
+  paramsSerializer?: (params: any) => string
+
   [propName: string]: any
 }
 

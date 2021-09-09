@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 11:41:32
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-09 19:49:06
+ * @LastEditTime: 2021-09-09 20:44:39
  * @FilePath: \ts-axios\src\helpers\utils.ts
  * @Description:
  */
@@ -25,6 +25,10 @@ export function extend<T, U>(to: T, from: U): T & U {
     ;(to as T & U)[key] = from[key] as any
   }
   return to as T & U
+}
+
+export function isURLSearchParams(val: any): val is URLSearchParams {
+  return typeof val !== 'undefined' && val instanceof URLSearchParams
 }
 
 export function deepMerge(...objs: any[]): any {

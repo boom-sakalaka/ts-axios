@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:08:08
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-05 13:22:03
+ * @LastEditTime: 2021-09-09 20:46:06
  * @FilePath: \ts-axios\src\core\dispatchRequest.ts
  * @Description:
  */
@@ -28,8 +28,8 @@ function precessCofig(config: AxiosRequestConfig): void {
 }
 
 function transformURL(config: AxiosRequestConfig): string {
-  const { url, params } = config
-  return buildURL(url!, params)
+  const { url, params, paramsSerializer } = config
+  return buildURL(url!, params, paramsSerializer)
 }
 
 function transformResponseData(res: AxiosResponse): AxiosResponse {
