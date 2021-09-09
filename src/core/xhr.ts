@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:57:25
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-09 19:58:44
+ * @LastEditTime: 2021-09-09 20:28:30
  * @FilePath: \ts-axios\src\core\xhr.ts
  * @Description:
  */
@@ -27,7 +27,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       xsrfCookieName,
       xsrfHeaderName,
       onDownloadProgress,
-      onUploadProgress
+      onUploadProgress,
+      auth
     } = config
     // 创XMLHttpRequest 对象
     const request = new XMLHttpRequest()
@@ -103,6 +104,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     function processHeader(): void {
       if (isFormData(data)) {
         delete headers['Content-Type']
+      }
+
+      if (auth) {
+        headers['Authorization'] = 'Basic ' + btoa(auth.username + ':' + auth.password)
       }
 
       if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName) {

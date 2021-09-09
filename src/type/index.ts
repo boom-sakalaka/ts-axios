@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:12:17
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-09 19:45:39
+ * @LastEditTime: 2021-09-09 20:26:46
  * @FilePath: \ts-axios\src\type\index.ts
  * @Description:
  */
@@ -44,6 +44,7 @@ export interface AxiosRequestConfig {
   onDownloadProgress?: (e: ProgressEvent) => void
   onUploadProgress?: (e: ProgressEvent) => void
 
+  auth?: AxiosBasicCredentials
   [propName: string]: any
 }
 
@@ -151,4 +152,9 @@ export interface Cancel {
 
 export interface CancelStatic {
   new (message?: string): Cancel
+}
+
+export interface AxiosBasicCredentials {
+  username: string
+  password: string
 }

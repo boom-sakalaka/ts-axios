@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 11:24:29
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-09 20:14:46
+ * @LastEditTime: 2021-09-09 20:31:04
  * @FilePath: \ts-axios\examples\server.js
  * @Description:
  */
@@ -16,6 +16,7 @@ const multipart = require('connect-multiparty')
 const router = express.Router()
 const path = require('path')
 require('./server2')
+const atob = require('atob')
 
 const app = express()
 const compiler = webpack(WebpackConfig)
