@@ -2,13 +2,13 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:08:08
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-09 20:46:06
+ * @LastEditTime: 2021-09-09 20:53:22
  * @FilePath: \ts-axios\src\core\dispatchRequest.ts
  * @Description:
  */
 
 import { flattenHeaders } from '../helpers/headers'
-import { buildURL } from '../helpers/url'
+import { buildURL, combineURL, isAbsoluteURL } from '../helpers/url'
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../type'
 import transform from './transform'
 import xhr from './xhr'
@@ -28,7 +28,10 @@ function precessCofig(config: AxiosRequestConfig): void {
 }
 
 function transformURL(config: AxiosRequestConfig): string {
-  const { url, params, paramsSerializer } = config
+  let { url, params, paramsSerializer, baseURL } = config
+  if (baseURL && !isAbsoluteURL(url!)) {
+    url = combineURL(baseURL, url)
+  }
   return buildURL(url!, params, paramsSerializer)
 }
 
