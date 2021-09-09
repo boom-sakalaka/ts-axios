@@ -2,15 +2,16 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:57:25
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-07 21:57:51
+ * @LastEditTime: 2021-09-09 19:58:44
  * @FilePath: \ts-axios\src\core\xhr.ts
  * @Description:
  */
-import { parseHeaders } from '../helpers/headers'
+import { parseHeaders, processHeaders } from '../helpers/headers'
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../type'
 import { createError } from '../helpers/error'
 import { isURLSameOrigin } from '../helpers/url'
 import cookie from '../helpers/cookie'
+import { isFormData } from '../helpers/utils'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
@@ -24,79 +25,110 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       cancelToken,
       withCredentials,
       xsrfCookieName,
-      xsrfHeaderName
+      xsrfHeaderName,
+      onDownloadProgress,
+      onUploadProgress
     } = config
     // 创XMLHttpRequest 对象
     const request = new XMLHttpRequest()
-
-    if (responseType) {
-      request.responseType = responseType
-    }
-
-    // 设置超时
-    if (timeout) {
-      request.timeout = timeout
-    }
-
-    if (withCredentials) {
-      request.withCredentials = withCredentials
-    }
-
-    // 请求超时后的回调
-    request.ontimeout = function handleTimeout() {
-      reject(createError(`Timeout of ${timeout} ms exceeded`, config, 'ECONNABORTED', request))
-    }
-    // 请求报错
-    request.onerror = function handleError() {
-      reject(createError('Network Error', config, null, request))
-    }
     request.open(method.toUpperCase(), url!, true)
-    request.onreadystatechange = function handleLoad() {
-      if (request.readyState !== 4) {
-        return
+
+    configureRequest()
+
+    addEvent()
+
+    processHeader()
+
+    processCancel()
+
+    request.send(data)
+
+    function configureRequest(): void {
+      if (responseType) {
+        request.responseType = responseType
       }
 
-      if (request.status === 0) {
-        return
+      // 设置超时
+      if (timeout) {
+        request.timeout = timeout
       }
 
-      const responseHeaders = parseHeaders(request.getAllResponseHeaders())
-      const responseData = responseType !== 'text' ? request.response : request.responseText
-      const response: AxiosResponse = {
-        data: responseData,
-        status: request.status,
-        statusText: request.statusText,
-        headers: responseHeaders,
-        config,
-        request
-      }
-      // 处理不同status 状况
-      handleResponse(response)
-    }
-
-    if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName) {
-      const xsrfValue = cookie.read(xsrfCookieName)
-      if (xsrfValue && xsrfHeaderName) {
-        headers[xsrfHeaderName] = xsrfValue
+      if (withCredentials) {
+        request.withCredentials = withCredentials
       }
     }
 
-    Object.keys(headers).forEach(name => {
-      if (data === null && name.toLowerCase() === 'content-type') {
-        delete headers[name]
-      } else {
-        request.setRequestHeader(name, headers[name])
+    function addEvent(): void {
+      // 请求超时后的回调
+      request.ontimeout = function handleTimeout() {
+        reject(createError(`Timeout of ${timeout} ms exceeded`, config, 'ECONNABORTED', request))
       }
-    })
+      // 请求报错
+      request.onerror = function handleError() {
+        reject(createError('Network Error', config, null, request))
+      }
 
-    if (cancelToken) {
-      cancelToken.promise.then(reason => {
-        request.abort()
-        reject(reason)
+      request.onreadystatechange = function handleLoad() {
+        if (request.readyState !== 4) {
+          return
+        }
+
+        if (request.status === 0) {
+          return
+        }
+
+        const responseHeaders = parseHeaders(request.getAllResponseHeaders())
+        const responseData = responseType !== 'text' ? request.response : request.responseText
+        const response: AxiosResponse = {
+          data: responseData,
+          status: request.status,
+          statusText: request.statusText,
+          headers: responseHeaders,
+          config,
+          request
+        }
+        // 处理不同status 状况
+        handleResponse(response)
+      }
+
+      if (onDownloadProgress) {
+        request.onprogress = onDownloadProgress
+      }
+
+      if (onUploadProgress) {
+        request.upload.onprogress = onUploadProgress
+      }
+    }
+
+    function processHeader(): void {
+      if (isFormData(data)) {
+        delete headers['Content-Type']
+      }
+
+      if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName) {
+        const xsrfValue = cookie.read(xsrfCookieName)
+        if (xsrfValue && xsrfHeaderName) {
+          headers[xsrfHeaderName] = xsrfValue
+        }
+      }
+
+      Object.keys(headers).forEach(name => {
+        if (data === null && name.toLowerCase() === 'content-type') {
+          delete headers[name]
+        } else {
+          request.setRequestHeader(name, headers[name])
+        }
       })
     }
 
-    request.send(data)
+    function processCancel(): void {
+      if (cancelToken) {
+        cancelToken.promise.then(reason => {
+          request.abort()
+          reject(reason)
+        })
+      }
+    }
 
     function handleResponse(response: AxiosResponse): void {
       if (response.status >= 200 && response.status < 300) {

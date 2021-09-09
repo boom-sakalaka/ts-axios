@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:12:17
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-07 21:38:05
+ * @LastEditTime: 2021-09-09 19:45:39
  * @FilePath: \ts-axios\src\type\index.ts
  * @Description:
  */
@@ -40,6 +40,10 @@ export interface AxiosRequestConfig {
   withCredentials?: boolean
   xsrfCookieName?: string
   xsrfHeaderName?: string
+
+  onDownloadProgress?: (e: ProgressEvent) => void
+  onUploadProgress?: (e: ProgressEvent) => void
+
   [propName: string]: any
 }
 

@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 11:23:54
  * @LastEditors: GZH
- * @LastEditTime: 2021-08-22 11:24:10
+ * @LastEditTime: 2021-09-09 20:05:09
  * @FilePath: \ts-axios\examples\webpack.config.js
  * @Description:
  */
@@ -61,6 +61,10 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       }
     ]
   },
