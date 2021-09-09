@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:08:08
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-09 20:53:22
+ * @LastEditTime: 2021-09-09 21:02:52
  * @FilePath: \ts-axios\src\core\dispatchRequest.ts
  * @Description:
  */
@@ -27,7 +27,7 @@ function precessCofig(config: AxiosRequestConfig): void {
   config.headers = flattenHeaders(config.headers, config.method!)
 }
 
-function transformURL(config: AxiosRequestConfig): string {
+export function transformURL(config: AxiosRequestConfig): string {
   let { url, params, paramsSerializer, baseURL } = config
   if (baseURL && !isAbsoluteURL(url!)) {
     url = combineURL(baseURL, url)

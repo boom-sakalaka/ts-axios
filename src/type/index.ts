@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:12:17
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-09 20:50:24
+ * @LastEditTime: 2021-09-09 21:06:23
  * @FilePath: \ts-axios\src\type\index.ts
  * @Description:
  */
@@ -96,11 +96,17 @@ export interface Axios {
   put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
 
   patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+
+  getUri(config?: AxiosRequestConfig): string
 }
 
 export interface AxiosInstance extends Axios {
   <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+}
+
+export interface AxiosClassStatic {
+  new (config: AxiosRequestConfig): Axios
 }
 
 export interface AxiosStatic extends AxiosInstance {
@@ -109,6 +115,12 @@ export interface AxiosStatic extends AxiosInstance {
   CancelToken: CancelTokenStatic
   Cancel: CancelStatic
   isCancel: (value: any) => boolean
+
+  all<T>(promises: Array<T | Promise<T>>): Promise<T[]>
+
+  spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R
+
+  Axios: AxiosClassStatic
 }
 
 export interface AxiosInterceptorManager<T> {
