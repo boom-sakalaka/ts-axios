@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:08:08
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-09 21:02:52
+ * @LastEditTime: 2021-09-11 21:40:34
  * @FilePath: \ts-axios\src\core\dispatchRequest.ts
  * @Description:
  */
@@ -16,9 +16,17 @@ import xhr from './xhr'
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
   throwIfCancellationRequested(config)
   precessCofig(config)
-  return xhr(config).then(res => {
-    return transformResponseData(res)
-  })
+  return xhr(config).then(
+    res => {
+      return transformResponseData(res)
+    },
+    e => {
+      if (e && e.response) {
+        e.response = transformResponseData(e.response)
+      }
+      return Promise.reject(e)
+    }
+  )
 }
 
 function precessCofig(config: AxiosRequestConfig): void {

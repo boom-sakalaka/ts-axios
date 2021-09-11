@@ -2,7 +2,7 @@
  * @Author: GZH
  * @Date: 2021-08-22 10:57:25
  * @LastEditors: GZH
- * @LastEditTime: 2021-09-09 20:36:55
+ * @LastEditTime: 2021-09-11 21:56:29
  * @FilePath: \ts-axios\src\core\xhr.ts
  * @Description:
  */
@@ -19,7 +19,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       data = null,
       url,
       method = 'get',
-      headers,
+      headers = {},
       responseType,
       timeout,
       cancelToken,
